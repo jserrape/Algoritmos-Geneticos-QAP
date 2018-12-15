@@ -7,6 +7,8 @@ package qap.genetic.algorithm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -19,38 +21,68 @@ public class main {
     private static int flujos[][];
     private static int distancias[][];
 
+    private static int tamPoblacion = 50;
+    private static int nIteraciones = 100;
+
+    private static ArrayList<Individuo> poblacion;
+
     /**
      * @param args the command line arguments
      * @throws java.io.FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Comienza...");
+        leerFichero();
+        //imprimirFichero();
+        generarPoblacion();
+    }
+
+    private static void generarPoblacion() {
+        poblacion = new ArrayList<>();
+        for (int i = 0; i < tamPoblacion; i++) {
+            Individuo ind = new Individuo(n);
+            ind.calcularFitness(flujos, distancias);
+            poblacion.add(ind);
+        }
+    }
+
+    private static void leerFichero() throws FileNotFoundException {
         try (Scanner sc = new Scanner(new File("qap.datos/chr12c.dat"))) {
             if (sc.hasNextInt()) {
                 n = sc.nextInt();
-                System.out.println("Tamaño del problema " + n);
-
                 flujos = new int[n][n];
                 distancias = new int[n][n];
             }
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     flujos[i][j] = sc.nextInt();
-                    System.out.print(flujos[i][j] + "\t");
                 }
-                System.out.println("");
             }
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     distancias[i][j] = sc.nextInt();
-                    System.out.print(distancias[i][j] + "\t");
                 }
-                System.out.println("");
             }
         }
     }
 
+    private static void imprimirFichero() {
+        System.out.println("Tamaño del problema " + n);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print(flujos[i][j] + "\t");
+            }
+            System.out.println("");
+        }
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print(distancias[i][j] + "\t");
+            }
+            System.out.println("");
+        }
+
+    }
 }
