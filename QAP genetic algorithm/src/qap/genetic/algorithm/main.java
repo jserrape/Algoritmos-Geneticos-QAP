@@ -35,6 +35,7 @@ public class main {
         leerFichero();
         //imprimirFichero();
         generarPoblacion();
+        algoritmoEstandar();
     }
 
     private static void generarPoblacion() {
@@ -46,8 +47,33 @@ public class main {
         }
     }
 
+    private static void algoritmoEstandar() {
+        for (int i = 0; i < nIteraciones; i++) {
+
+            //Selecciono tamPoblacion individuos por torneo
+            ArrayList<Individuo> poblacionAuxiliar = new ArrayList<>();
+            Random rnd = new Random();
+            for (int j = 0; j < tamPoblacion; j++) {
+                int p1 = rnd.nextInt((tamPoblacion - 1) + 1);
+                int p2 = rnd.nextInt((tamPoblacion - 1) + 1);
+                if (p1 == p2) {
+                    while (p1 == p2) {
+                        p2 = rnd.nextInt((tamPoblacion - 1) + 1);
+                    }
+                }
+                Individuo ind1 = poblacion.get(p1);
+                Individuo ind2 = poblacion.get(p2);
+                if (ind1.getFitness() < ind2.getFitness()) {
+                    poblacionAuxiliar.add(ind1);
+                } else {
+                    poblacionAuxiliar.add(ind2);
+                }
+            }
+        }
+    }
+
     private static void leerFichero() throws FileNotFoundException {
-        try (Scanner sc = new Scanner(new File("qap.datos/chr12c.dat"))) {
+        try (Scanner sc = new Scanner(new File("qap.datos/tai256c.dat"))) {
             if (sc.hasNextInt()) {
                 n = sc.nextInt();
                 flujos = new int[n][n];
