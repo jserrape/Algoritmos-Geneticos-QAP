@@ -36,32 +36,26 @@ public class Estandar {
         this.distancias = d;
         poblacion = new ArrayList<>();
         conf = new Configuracion();
-
-        Individuo padre1 = new Individuo(6);
-        Individuo padre2 = new Individuo(6);
-        cruce(/*padre1.getCromosoma(), padre2.getCromosoma()*/);
     }
 
     public void ejecutar() {
-        
+
     }
 
-    private void cruce(/*int[] padre1, int[] padre2*/) {
-        int[] padre1 = new int[]{2, 5, 0, 1, 4, 3};
-        int[] padre2 = new int[]{1, 2, 0, 5, 3, 4};
+    private void cruce(int[] padre1, int[] padre2) {
+
         System.out.println("Padre 1 " + Arrays.toString(padre1));
         System.out.println("Padre 2 " + Arrays.toString(padre2));
-        int n = 6; //Borrar
+
         int corte = (int) (Math.random() * n);
-        corte = 2; //Borrar
         int cromosoma1[], cromosoma2[];
         cromosoma1 = new int[n];
         cromosoma2 = new int[n];
-        System.out.println("Corte " + corte);
-        //Relleno el hijo 1
-        for (int i = 0; i < corte; i++) {
-            cromosoma1[i] = padre1[i];
+        for (int i = 0; i < n; i++) {
+            cromosoma1[i] = cromosoma2[i] = -1;
         }
+        //Relleno el hijo 1
+        System.arraycopy(padre1, 0, cromosoma1, 0, corte);
         int coincidencias = 0;
         for (int i = corte; i < n; i++) {
             if (!yaEsta(cromosoma1, corte + 1, padre2[i])) {
@@ -74,15 +68,15 @@ public class Estandar {
             for (int j = corte; j < n; j++) {
                 if (!yaEsta(cromosoma1, n - coincidencias, padre1[j])) {
                     cromosoma1[i] = padre1[j];
+                    --coincidencias;
                     break;
                 }
             }
         }
         System.out.println("Hijo 1" + Arrays.toString(cromosoma1));
+        
         //Relleno el hijo 2
-        for (int i = 0; i < corte; i++) {
-            cromosoma2[i] = padre2[i];
-        }
+        System.arraycopy(padre2, 0, cromosoma2, 0, corte);
         coincidencias = 0;
         for (int i = corte; i < n; i++) {
             if (!yaEsta(cromosoma2, corte + 1, padre1[i])) {
@@ -95,6 +89,7 @@ public class Estandar {
             for (int j = corte; j < n; j++) {
                 if (!yaEsta(cromosoma2, n - coincidencias, padre2[j])) {
                     cromosoma2[i] = padre2[j];
+                    --coincidencias;
                     break;
                 }
             }
@@ -105,11 +100,9 @@ public class Estandar {
     private boolean yaEsta(int cromosoma[], int pos, int num) {
         for (int i = 0; i < pos; i++) {
             if (cromosoma[i] == num) {
-                //System.out.println("Ya esta el " + num + " " + Arrays.toString(cromosoma) + " en la pos " + i);
                 return true;
             }
         }
-        //System.out.println("No esta el " + num);
         return false;
     }
 
