@@ -31,11 +31,12 @@ public class main {
         System.out.println("Comienza...");
         leerFichero();
         Estandar est = new Estandar(n, flujos, distancias);
-        //est.ejecutar();
+        est.ejecutar();
     }
 
     private static void leerFichero() throws FileNotFoundException {
-        try (Scanner sc = new Scanner(new File("qap.datos/tai256c.dat"))) {
+        Configuracion conf = new Configuracion();
+        try (Scanner sc = new Scanner(new File(conf.getFichero()))) {
             if (sc.hasNextInt()) {
                 n = sc.nextInt();
                 flujos = new int[n][n];

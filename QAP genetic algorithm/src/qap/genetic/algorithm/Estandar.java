@@ -15,20 +15,16 @@ import java.util.Random;
  */
 public class Estandar {
 
-    private int n;
-    private int flujos[][];
-    private int distancias[][];
+    private final int n;
+    private final int flujos[][];
+    private final int distancias[][];
 
-    private ArrayList<Individuo> poblacion, descendencia;
+    private final ArrayList<Individuo> poblacion;
+    private ArrayList<Individuo> descendencia;
 
-    private Configuracion conf;
+    private final Configuracion conf;
 
-    int tamPoblacion = 50;
-    int tabu;
-    int costes[], costesAux[];
-    double probGen;
-    int nGeneracion;
-    int anteriorMejor;
+    private Individuo mejor;
 
     public Estandar(int n, int f[][], int d[][]) {
         this.n = n;
@@ -36,17 +32,62 @@ public class Estandar {
         this.distancias = d;
         poblacion = new ArrayList<>();
         conf = new Configuracion();
+
+        mejor = new Individuo(n);
+        mejor.calcularFitness(flujos, distancias);
     }
 
     public void ejecutar() {
+        for (int i = 0; i < conf.getnIteraciones(); i++) {
+            generarPoblacionAleatoria(conf.getTamPoblacion()-1);
+            poblacion.add(mejor);
+            descendencia = new ArrayList<>();
+            for (int j = 0; j < conf.getTamPoblacion() / 2; j++) {
 
+                Individuo padre1 = torneoBinario1();
+                Individuo padre2 = torneoBinario2(padre1);
+                Individuo hijo1 = new Individuo(), hijo2 = new Individuo();
+
+                cruce(padre1.getCromosoma(), padre2.getCromosoma(), hijo1, hijo2);
+                descendencia.add(hijo1);
+                descendencia.add(hijo2);
+            }
+            System.out.println("Voy a mutarlos");
+            mutarPoblacion();
+            buscarMejor();
+        }
+    }
+    
+    private void buscarMejor(){
+        for(int i=0;i<conf.getTamPoblacion();i++){
+            if(descendencia.get(i).getFitness()<mejor.getFitness()){
+                System.out.println("-----Nuevo mejor "+descendencia.get(i).getFitness());
+                mejor.setCromosoma(descendencia.get(i).getCromosoma());
+                mejor.calcularFitness(flujos, distancias);
+            }
+        }
     }
 
-    private void cruce(int[] padre1, int[] padre2) {
+    private void mutarPoblacion() {
+        int prob;
+        int n1, n2, aux;
+        for (int i = 0; i < conf.getTamPoblacion(); i++) {
+            prob = (int) (Math.random() * 100) + 1;
+            if (conf.getProbMutacion() > prob) {
+                n1 = (int) (Math.random() * n);
+                n2 = (int) (Math.random() * n);
+                while (n1 == n2) {
+                    n2 = (int) (Math.random() * n);
+                }
+                aux = descendencia.get(i).getCromosoma()[n1];
+                descendencia.get(i).getCromosoma()[n1] = descendencia.get(i).getCromosoma()[n2];
+                descendencia.get(i).getCromosoma()[n2] = descendencia.get(i).getCromosoma()[aux];
+            }
+            descendencia.get(i).calcularFitness(flujos, distancias);
+        }
+    }
 
-        System.out.println("Padre 1 " + Arrays.toString(padre1));
-        System.out.println("Padre 2 " + Arrays.toString(padre2));
-
+    private void cruce(int[] padre1, int[] padre2, Individuo hijo1, Individuo hijo2) {
         int corte = (int) (Math.random() * n);
         int cromosoma1[], cromosoma2[];
         cromosoma1 = new int[n];
@@ -73,8 +114,8 @@ public class Estandar {
                 }
             }
         }
-        System.out.println("Hijo 1" + Arrays.toString(cromosoma1));
-        
+        hijo1.setCromosoma(cromosoma1);
+
         //Relleno el hijo 2
         System.arraycopy(padre2, 0, cromosoma2, 0, corte);
         coincidencias = 0;
@@ -94,7 +135,7 @@ public class Estandar {
                 }
             }
         }
-        System.out.println("Hijo 2" + Arrays.toString(cromosoma2));
+        hijo2.setCromosoma(cromosoma2);
     }
 
     private boolean yaEsta(int cromosoma[], int pos, int num) {

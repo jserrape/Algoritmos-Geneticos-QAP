@@ -11,8 +11,10 @@ package qap.genetic.algorithm;
  */
 public class Configuracion {
 
-    private final int tamPoblacion = 50;
-    private final int nIteraciones = 100;
+    private final int tamPoblacion = 500;
+    private final int nIteraciones = 500;
+    private final int probMutacion = 50;
+    private final String fichero ="qap.datos/chr12a.dat";
 
     /**
      * @return the tamPoblacion
@@ -27,4 +29,14 @@ public class Configuracion {
     public int getnIteraciones() {
         return nIteraciones;
     }
+    
+    public int getProbMutacion() {
+        return probMutacion;
+    }
+    
+    public String getFichero() {
+        return fichero;
+    }
+    
+    
 }

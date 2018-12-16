@@ -56,11 +56,22 @@ public class Individuo {
         this.fitness = 0;
         for (int i = 0; i < this.getCromosoma().length; i++) {
             for (int j = 0; j < this.getCromosoma().length; j++) {
-                this.fitness += flujos[i][j] * distancias[this.getCromosoma()[i]][this.getCromosoma()[j]];
+                //System.out.println(i+"\t"+j);
+                int v1=flujos[i][j];
+                int v2 = this.getCromosoma()[i];
+                int v3 = this.getCromosoma()[j];
+                if(v2 >= 12){
+                    System.out.println("v2");
+                }
+                if(v3 >= 12){
+                    System.out.println("v3");
+                }
+                int v4 = distancias[v2][v3];
+                this.fitness += v1 * v4;
             }
         }
         if (this.fitness < 44095032) {
-            System.out.println("Fitness "+this.getFitness());
+            //System.out.println("Fitness "+this.getFitness());
         }
     }
 
