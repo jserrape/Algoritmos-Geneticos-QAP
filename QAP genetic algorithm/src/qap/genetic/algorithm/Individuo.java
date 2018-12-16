@@ -52,11 +52,11 @@ public class Individuo {
     public void calcularFitness(int flujos[][], int distancias[][]) {
         this.fitness = 0;
         for (int i = 0; i < this.getCromosoma().length; i++) {
-            for (int j = i + 1; j < this.getCromosoma().length; j++) {
+            for (int j = 0; j < this.getCromosoma().length; j++) {
                 this.fitness += flujos[i][j] * distancias[this.getCromosoma()[i]][this.getCromosoma()[j]];
             }
         }
-        if (this.fitness > 44095032) {
+        if (this.fitness < 44095032) {
             System.out.println(this.getFitness());
         }
     }
