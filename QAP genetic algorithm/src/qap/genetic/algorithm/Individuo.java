@@ -18,6 +18,9 @@ public class Individuo {
     private int cromosoma[];
     private int tam;
 
+    public Individuo() {
+    }
+    
     public Individuo(int t) {
         fitness = -1;
         tam = t;
@@ -57,7 +60,7 @@ public class Individuo {
             }
         }
         if (this.fitness < 44095032) {
-            System.out.println(this.getFitness());
+            System.out.println("Fitness "+this.getFitness());
         }
     }
 

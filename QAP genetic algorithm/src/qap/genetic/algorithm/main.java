@@ -21,9 +21,6 @@ public class main {
     private static int flujos[][];
     private static int distancias[][];
 
-    private static int tamPoblacion = 50;
-    private static int nIteraciones = 100;
-
     private static ArrayList<Individuo> poblacion;
 
     /**
@@ -33,43 +30,8 @@ public class main {
     public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Comienza...");
         leerFichero();
-        //imprimirFichero();
-        generarPoblacion();
-        algoritmoEstandar();
-    }
-
-    private static void generarPoblacion() {
-        poblacion = new ArrayList<>();
-        for (int i = 0; i < tamPoblacion; i++) {
-            Individuo ind = new Individuo(n);
-            ind.calcularFitness(flujos, distancias);
-            poblacion.add(ind);
-        }
-    }
-
-    private static void algoritmoEstandar() {
-        for (int i = 0; i < nIteraciones; i++) {
-
-            //Selecciono tamPoblacion individuos por torneo
-            ArrayList<Individuo> poblacionAuxiliar = new ArrayList<>();
-            Random rnd = new Random();
-            for (int j = 0; j < tamPoblacion; j++) {
-                int p1 = rnd.nextInt((tamPoblacion - 1) + 1);
-                int p2 = rnd.nextInt((tamPoblacion - 1) + 1);
-                if (p1 == p2) {
-                    while (p1 == p2) {
-                        p2 = rnd.nextInt((tamPoblacion - 1) + 1);
-                    }
-                }
-                Individuo ind1 = poblacion.get(p1);
-                Individuo ind2 = poblacion.get(p2);
-                if (ind1.getFitness() < ind2.getFitness()) {
-                    poblacionAuxiliar.add(ind1);
-                } else {
-                    poblacionAuxiliar.add(ind2);
-                }
-            }
-        }
+        Estandar est = new Estandar(n, flujos, distancias);
+        //est.ejecutar();
     }
 
     private static void leerFichero() throws FileNotFoundException {
@@ -109,6 +71,5 @@ public class main {
             }
             System.out.println("");
         }
-
     }
 }
