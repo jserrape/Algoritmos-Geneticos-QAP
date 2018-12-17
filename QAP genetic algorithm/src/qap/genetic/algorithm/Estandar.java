@@ -24,7 +24,7 @@ public class Estandar {
 
     private final Configuracion conf;
 
-    private Individuo mejor;
+    private final Individuo mejor;
 
     public Estandar(int n, int f[][], int d[][]) {
         this.n = n;
@@ -39,7 +39,7 @@ public class Estandar {
 
     public void ejecutar() {
         for (int i = 0; i < conf.getnIteraciones(); i++) {
-            generarPoblacionAleatoria(conf.getTamPoblacion()-1);
+            generarPoblacionAleatoria(conf.getTamPoblacion() - 1);
             poblacion.add(mejor);
             descendencia = new ArrayList<>();
             for (int j = 0; j < conf.getTamPoblacion() / 2; j++) {
@@ -52,16 +52,15 @@ public class Estandar {
                 descendencia.add(hijo1);
                 descendencia.add(hijo2);
             }
-            System.out.println("Voy a mutarlos");
             mutarPoblacion();
             buscarMejor();
         }
     }
-    
-    private void buscarMejor(){
-        for(int i=0;i<conf.getTamPoblacion();i++){
-            if(descendencia.get(i).getFitness()<mejor.getFitness()){
-                System.out.println("-----Nuevo mejor "+descendencia.get(i).getFitness());
+
+    private void buscarMejor() {
+        for (int i = 0; i < conf.getTamPoblacion(); i++) {
+            if (descendencia.get(i).getFitness() < mejor.getFitness()) {
+                System.out.println("-----Nuevo mejor " + descendencia.get(i).getFitness());
                 mejor.setCromosoma(descendencia.get(i).getCromosoma());
                 mejor.calcularFitness(flujos, distancias);
             }
@@ -80,8 +79,10 @@ public class Estandar {
                     n2 = (int) (Math.random() * n);
                 }
                 aux = descendencia.get(i).getCromosoma()[n1];
-                descendencia.get(i).getCromosoma()[n1] = descendencia.get(i).getCromosoma()[n2];
-                descendencia.get(i).getCromosoma()[n2] = descendencia.get(i).getCromosoma()[aux];
+                int[] cromAux = descendencia.get(i).getCromosoma().clone();
+                cromAux[n1] = cromAux[n2];
+                cromAux[n2] = aux;
+                descendencia.get(i).setCromosoma(cromAux);
             }
             descendencia.get(i).calcularFitness(flujos, distancias);
         }
@@ -136,6 +137,19 @@ public class Estandar {
             }
         }
         hijo2.setCromosoma(cromosoma2);
+
+        for (int i = 0; i < n; i++) {
+            if (cromosoma1[i] == -1) {
+                System.out.println("Padre 1: " + Arrays.toString(padre1));
+                System.out.println("Padre 2: " + Arrays.toString(padre2));
+                System.out.println(Arrays.toString(cromosoma1));
+            }
+            if (cromosoma2[i] == -1) {
+                System.out.println("Padre 1: " + Arrays.toString(padre1));
+                System.out.println("Padre 2: " + Arrays.toString(padre2));
+                System.out.println(Arrays.toString(cromosoma2));
+            }
+        }
     }
 
     private boolean yaEsta(int cromosoma[], int pos, int num) {

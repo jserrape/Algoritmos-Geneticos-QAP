@@ -12,8 +12,8 @@ package qap.genetic.algorithm;
 public class Configuracion {
 
     private final int tamPoblacion = 500;
-    private final int nIteraciones = 500;
-    private final int probMutacion = 50;
+    private final int nIteraciones = 25000;
+    private final int probMutacion = 80;
     private final String fichero ="qap.datos/chr12a.dat";
 
     /**

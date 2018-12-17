@@ -6,6 +6,7 @@
 package qap.genetic.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -60,12 +61,6 @@ public class Individuo {
                 int v1=flujos[i][j];
                 int v2 = this.getCromosoma()[i];
                 int v3 = this.getCromosoma()[j];
-                if(v2 >= 12){
-                    System.out.println("v2");
-                }
-                if(v3 >= 12){
-                    System.out.println("v3");
-                }
                 int v4 = distancias[v2][v3];
                 this.fitness += v1 * v4;
             }
