@@ -21,8 +21,6 @@ public class main {
     private static int flujos[][];
     private static int distancias[][];
 
-    private static ArrayList<Individuo> poblacion;
-
     /**
      * @param args the command line arguments
      * @throws java.io.FileNotFoundException
@@ -30,9 +28,14 @@ public class main {
     public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Comienza...");
         leerFichero();
-        Estandar est = new Estandar(n, flujos, distancias);
-        est.ejecutar();
-        new Grafico(est.getGraficoMejora()).setVisible(true);
+        //Estandar
+        //Estandar est = new Estandar(n, flujos, distancias);
+        //est.ejecutar();
+        //new Grafico(est.getGraficoMejora()).setVisible(true);
+        //Baldwin
+        Baldwiniana bald = new Baldwiniana(n, flujos, distancias);
+        bald.ejecutar();
+        //new Grafico(bald.getGraficoMejora()).setVisible(true);
     }
 
     private static void leerFichero() throws FileNotFoundException {

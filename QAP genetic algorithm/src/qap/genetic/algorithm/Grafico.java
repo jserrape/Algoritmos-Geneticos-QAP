@@ -46,7 +46,6 @@ public class Grafico extends JFrame {
         for(int i=1;i<datos.size();i++){
             line_chart_dataset.addValue(datos.get(i).getFitness(), "Fitness", Integer.toString(datos.get(i).getIteracion()));
         }
-        System.out.println("Mejoras "+datos.size());
 
         // Creando el Grafico
         JFreeChart chart = ChartFactory.createLineChart("Evolución del fitness", "Iteracion", "Fitness", line_chart_dataset, PlotOrientation.VERTICAL, true, true, false);

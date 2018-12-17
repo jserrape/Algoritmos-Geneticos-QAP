@@ -48,6 +48,7 @@ public class Estandar {
     }
 
     public void ejecutar() {
+        long startTime = System.currentTimeMillis();
         for (int i = 0; i < conf.getnIteraciones(); i++) {
             generarPoblacionAleatoria(conf.getTamPoblacion() - 1);
             poblacion.add(mejor);
@@ -66,6 +67,8 @@ public class Estandar {
             buscarMejor(i);
         }
         guardarResultado();
+        long endTime = System.currentTimeMillis() - startTime;
+        System.out.println("El algoritmo genetico estandar ha tardado " + (endTime / 1000) + " segundos.");
     }
 
     private void buscarMejor(int ite) {
@@ -75,7 +78,7 @@ public class Estandar {
                 mejor.setCromosoma(descendencia.get(i).getCromosoma());
                 mejor.calcularFitness(flujos, distancias);
                 this.graficoMejora.add(new Pair(ite, mejor.getFitness()));
-                guardarResultado();
+                //guardarResultado();
             }
         }
     }
@@ -150,19 +153,6 @@ public class Estandar {
             }
         }
         hijo2.setCromosoma(cromosoma2);
-
-        for (int i = 0; i < n; i++) {
-            if (cromosoma1[i] == -1) {
-                System.out.println("Padre 1: " + Arrays.toString(padre1));
-                System.out.println("Padre 2: " + Arrays.toString(padre2));
-                System.out.println(Arrays.toString(cromosoma1));
-            }
-            if (cromosoma2[i] == -1) {
-                System.out.println("Padre 1: " + Arrays.toString(padre1));
-                System.out.println("Padre 2: " + Arrays.toString(padre2));
-                System.out.println(Arrays.toString(cromosoma2));
-            }
-        }
     }
 
     private boolean yaEsta(int cromosoma[], int pos, int num) {
@@ -224,7 +214,7 @@ public class Estandar {
     }
 
     private void guardarResultado() {
-        String ruta = "estandar/"+this.mejor.getFitness()+".txt";
+        String ruta = "estandar/" + this.mejor.getFitness() + ".txt";
         File archivo = new File(ruta);
         BufferedWriter bw;
         try {
@@ -233,7 +223,7 @@ public class Estandar {
             bw.close();
         } catch (IOException ex) {
             Logger.getLogger(Estandar.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
     }
 
     /**
