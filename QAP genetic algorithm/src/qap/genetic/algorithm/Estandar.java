@@ -5,9 +5,15 @@
  */
 package qap.genetic.algorithm;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,6 +28,8 @@ public class Estandar {
     private final ArrayList<Individuo> poblacion;
     private ArrayList<Individuo> descendencia;
 
+    private ArrayList<Pair> graficoMejora;
+
     private final Configuracion conf;
 
     private final Individuo mejor;
@@ -31,10 +39,12 @@ public class Estandar {
         this.flujos = f;
         this.distancias = d;
         poblacion = new ArrayList<>();
+        graficoMejora = new ArrayList<>();
         conf = new Configuracion();
 
         mejor = new Individuo(n);
         mejor.calcularFitness(flujos, distancias);
+        this.graficoMejora.add(new Pair(1, mejor.getFitness()));
     }
 
     public void ejecutar() {
@@ -53,16 +63,19 @@ public class Estandar {
                 descendencia.add(hijo2);
             }
             mutarPoblacion();
-            buscarMejor();
+            buscarMejor(i);
         }
+        guardarResultado();
     }
 
-    private void buscarMejor() {
+    private void buscarMejor(int ite) {
         for (int i = 0; i < conf.getTamPoblacion(); i++) {
             if (descendencia.get(i).getFitness() < mejor.getFitness()) {
-                System.out.println("-----Nuevo mejor " + descendencia.get(i).getFitness());
+                System.out.println("-----Nuevo mejor " + descendencia.get(i).getFitness() + " en la iteracion " + ite);
                 mejor.setCromosoma(descendencia.get(i).getCromosoma());
                 mejor.calcularFitness(flujos, distancias);
+                this.graficoMejora.add(new Pair(ite, mejor.getFitness()));
+                guardarResultado();
             }
         }
     }
@@ -210,4 +223,23 @@ public class Estandar {
         }
     }
 
+    private void guardarResultado() {
+        String ruta = "estandar/"+this.mejor.getFitness()+".txt";
+        File archivo = new File(ruta);
+        BufferedWriter bw;
+        try {
+            bw = new BufferedWriter(new FileWriter(archivo));
+            bw.write(Arrays.toString(mejor.getCromosoma()));
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Estandar.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+    }
+
+    /**
+     * @return the graficoMejora
+     */
+    public ArrayList<Pair> getGraficoMejora() {
+        return graficoMejora;
+    }
 }

@@ -32,6 +32,7 @@ public class main {
         leerFichero();
         Estandar est = new Estandar(n, flujos, distancias);
         est.ejecutar();
+        new Grafico(est.getGraficoMejora()).setVisible(true);
     }
 
     private static void leerFichero() throws FileNotFoundException {
