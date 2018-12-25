@@ -21,7 +21,7 @@ public class Individuo {
 
     public Individuo() {
     }
-    
+
     public Individuo(int t) {
         fitness = -1;
         tam = t;
@@ -38,18 +38,21 @@ public class Individuo {
         }
     }
 
-    public boolean igualIndividuo(Individuo indi) {
+    public Individuo(int t, int crom[], int f) {
+        this.tam = t;
+        this.cromosoma = crom;
+        this.fitness = f;
+    }
 
+    public boolean igualIndividuo(Individuo indi) {
         if (this.tam != indi.getTam()) {
             return false;
         }
-
         for (int i = 0; i < this.tam; i++) {
             if (this.cromosoma[i] != indi.getCromosoma()[i]) {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -58,7 +61,7 @@ public class Individuo {
         for (int i = 0; i < this.getCromosoma().length; i++) {
             for (int j = 0; j < this.getCromosoma().length; j++) {
                 //System.out.println(i+"\t"+j);
-                int v1=flujos[i][j];
+                int v1 = flujos[i][j];
                 int v2 = this.getCromosoma()[i];
                 int v3 = this.getCromosoma()[j];
                 int v4 = distancias[v2][v3];
@@ -66,7 +69,33 @@ public class Individuo {
             }
         }
         if (this.fitness < 44095032) {
-            //System.out.println("Fitness "+this.getFitness());
+            System.out.println("Fitness " + this.getFitness());
+        }
+    }
+
+    public void busquedaLocal(int flujos[][], int distancias[][]) {
+        Individuo local = new Individuo(this.tam, this.cromosoma, this.fitness);
+        Individuo indiAux;
+        int vAux;
+        boolean mejorado=false;
+        for (int i = 0; i < tam; i++) {
+            for (int j = 0; j < tam; j++) {
+                indiAux = new Individuo(local.tam, local.cromosoma, local.fitness);
+                vAux = indiAux.getCromosoma()[i];
+                indiAux.getCromosoma()[i] = indiAux.getCromosoma()[j];
+                indiAux.getCromosoma()[j] = vAux;
+                indiAux.calcularFitness(flujos, distancias);
+                if (indiAux.getFitness() < local.getFitness()) {
+                    System.out.println("Ha habido una mejora local");
+                    local = new Individuo(indiAux.tam, indiAux.cromosoma, indiAux.fitness);
+                    mejorado=true;
+                }
+            }
+        }
+        if(mejorado){
+            this.setCromosoma(local.cromosoma);
+            this.setFitness(local.fitness);
+            this.setTam(local.tam);
         }
     }
 
