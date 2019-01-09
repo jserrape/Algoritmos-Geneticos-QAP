@@ -65,6 +65,7 @@ public class Estandar {
             }
             mutarPoblacion();
             buscarMejor(i);
+            System.gc(); 
         }
         guardarResultado();
         long endTime = System.currentTimeMillis() - startTime;
@@ -78,7 +79,10 @@ public class Estandar {
                 mejor.setCromosoma(descendencia.get(i).getCromosoma());
                 mejor.calcularFitness(flujos, distancias);
                 this.graficoMejora.add(new Pair(ite, mejor.getFitness()));
-                //guardarResultado();
+                if(mejor.getFitness()<45152454){
+                    guardarResultado();
+                    System.out.println("Oleeeeeeeeeeeeeee");
+                }
             }
         }
     }

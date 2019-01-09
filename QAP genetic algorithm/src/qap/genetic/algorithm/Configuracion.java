@@ -12,7 +12,7 @@ package qap.genetic.algorithm;
 public class Configuracion {
 
     private final int tamPoblacion = 50;
-    private final int nIteraciones = 100;
+    private final int nIteraciones = 100000;
     private final int probMutacion = 80;
     //private final String fichero ="qap.datos/chr12a.dat";
     private final String fichero ="qap.datos/tai256c.dat"; //Cota --> 44095032

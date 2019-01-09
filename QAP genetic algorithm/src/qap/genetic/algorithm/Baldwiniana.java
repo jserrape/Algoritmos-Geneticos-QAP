@@ -46,8 +46,9 @@ public class Baldwiniana {
 
     public void ejecutar() {
         long startTime = System.currentTimeMillis();
-        guardarResultado();
+        
         long endTime = System.currentTimeMillis() - startTime;
+        guardarResultado();
         System.out.println("El algoritmo genetico Baldwinin ha tardado " + (endTime / 1000) + " segundos");
     }
 

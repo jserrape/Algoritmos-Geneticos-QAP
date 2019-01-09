@@ -77,7 +77,7 @@ public class Individuo {
         Individuo local = new Individuo(this.tam, this.cromosoma, this.fitness);
         Individuo indiAux;
         int vAux;
-        boolean mejorado=false;
+        boolean mejorado = false;
         for (int i = 0; i < tam; i++) {
             for (int j = 0; j < tam; j++) {
                 indiAux = new Individuo(local.tam, local.cromosoma, local.fitness);
@@ -88,11 +88,11 @@ public class Individuo {
                 if (indiAux.getFitness() < local.getFitness()) {
                     System.out.println("Ha habido una mejora local");
                     local = new Individuo(indiAux.tam, indiAux.cromosoma, indiAux.fitness);
-                    mejorado=true;
+                    mejorado = true;
                 }
             }
         }
-        if(mejorado){
+        if (mejorado) {
             this.setCromosoma(local.cromosoma);
             this.setFitness(local.fitness);
             this.setTam(local.tam);
