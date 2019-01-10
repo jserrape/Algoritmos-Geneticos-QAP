@@ -29,13 +29,14 @@ public class main {
         System.out.println("Comienza...");
         leerFichero();
         //Estandar
-        Estandar est = new Estandar(n, flujos, distancias);
-        est.ejecutar();
-        new Grafico(est.getGraficoMejora()).setVisible(true);
+//        Estandar est = new Estandar(n, flujos, distancias);
+//        est.ejecutar();
+//        new Grafico(est.getGraficoMejora(),"estandar").setVisible(true);
+
         //Baldwin
-//        Baldwiniana bald = new Baldwiniana(n, flujos, distancias);
-//        bald.ejecutar();
-        //new Grafico(bald.getGraficoMejora()).setVisible(true);
+        Baldwiniana bald = new Baldwiniana(n, flujos, distancias);
+        bald.ejecutar();
+        new Grafico(bald.getGraficoMejora(),"balwiniana").setVisible(true);
     }
 
     private static void leerFichero() throws FileNotFoundException {

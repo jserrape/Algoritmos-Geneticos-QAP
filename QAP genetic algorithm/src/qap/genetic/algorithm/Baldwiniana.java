@@ -27,9 +27,11 @@ public class Baldwiniana {
 
     private final ArrayList<Individuo> poblacion;
     private ArrayList<Individuo> descendencia;
+
     private ArrayList<Pair> graficoMejora;
 
     private final Configuracion conf;
+
     private final Individuo mejor;
 
     public Baldwiniana(int n, int f[][], int d[][]) {
@@ -57,8 +59,7 @@ public class Baldwiniana {
                 Individuo padre2 = torneoBinario2(padre1);
                 Individuo hijo1 = new Individuo(), hijo2 = new Individuo();
 
-                //cruce(padre1.getCromosoma(), padre2.getCromosoma(), hijo1, hijo2);
-                
+                cruce(padre1.getCromosoma(), padre2.getCromosoma(), hijo1, hijo2);
                 descendencia.add(hijo1);
                 descendencia.add(hijo2);
             }
@@ -66,22 +67,106 @@ public class Baldwiniana {
             buscarMejor(i);
             System.gc();
         }
-        long endTime = System.currentTimeMillis() - startTime;
         guardarResultado();
-        System.out.println("El algoritmo genetico Baldwinin ha tardado " + (endTime / 1000) + " segundos");
+        long endTime = System.currentTimeMillis() - startTime;
+        System.out.println("El algoritmo genetico estandar ha tardado " + (endTime / 1000) + " segundos.");
     }
 
-    private void guardarResultado() {
-        String ruta = "baldwin/" + this.mejor.getFitness() + ".txt";
-        File archivo = new File(ruta);
-        BufferedWriter bw;
-        try {
-            bw = new BufferedWriter(new FileWriter(archivo));
-            bw.write(Arrays.toString(mejor.getCromosoma()));
-            bw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Estandar.class.getName()).log(Level.SEVERE, null, ex);
+    private void buscarMejor(int ite) {
+        for (int i = 0; i < conf.getTamPoblacion(); i++) {
+            descendencia.get(i).aplicarBusquedaLocal(this.flujos, this.distancias);
+            if (descendencia.get(i).getFitness() < mejor.getFitness()) {
+                System.out.println("-----Nuevo mejor " + descendencia.get(i).getFitness() + " en la iteracion " + ite);
+                mejor.setCromosoma(descendencia.get(i).getCromosoma());
+                mejor.calcularFitness(flujos, distancias);
+                this.graficoMejora.add(new Pair(ite, mejor.getFitness()));
+                //if(mejor.getFitness()<45152454){
+                guardarResultado();
+                //    System.out.println("Oleeeeeeeeeeeeeee");
+                //}
+            }
         }
+    }
+
+    private void mutarPoblacion() {
+        int prob;
+        int n1, n2, aux;
+        for (int i = 0; i < conf.getTamPoblacion(); i++) {
+            prob = (int) (Math.random() * 100) + 1;
+            if (conf.getProbMutacion() > prob) {
+                n1 = (int) (Math.random() * n);
+                n2 = (int) (Math.random() * n);
+                while (n1 == n2) {
+                    n2 = (int) (Math.random() * n);
+                }
+                aux = descendencia.get(i).getCromosoma()[n1];
+                int[] cromAux = descendencia.get(i).getCromosoma().clone();
+                cromAux[n1] = cromAux[n2];
+                cromAux[n2] = aux;
+                descendencia.get(i).setCromosoma(cromAux);
+            }
+            descendencia.get(i).calcularFitness(flujos, distancias);
+        }
+    }
+
+    private void cruce(int[] padre1, int[] padre2, Individuo hijo1, Individuo hijo2) {
+        int corte = (int) (Math.random() * n);
+        int cromosoma1[], cromosoma2[];
+        cromosoma1 = new int[n];
+        cromosoma2 = new int[n];
+        for (int i = 0; i < n; i++) {
+            cromosoma1[i] = cromosoma2[i] = -1;
+        }
+        //Relleno el hijo 1
+        System.arraycopy(padre1, 0, cromosoma1, 0, corte);
+        int coincidencias = 0;
+        for (int i = corte; i < n; i++) {
+            if (!yaEsta(cromosoma1, corte + 1, padre2[i])) {
+                cromosoma1[i - coincidencias] = padre2[i];
+            } else {
+                ++coincidencias;
+            }
+        }
+        for (int i = n - coincidencias; i < n; i++) {
+            for (int j = corte; j < n; j++) {
+                if (!yaEsta(cromosoma1, n - coincidencias, padre1[j])) {
+                    cromosoma1[i] = padre1[j];
+                    --coincidencias;
+                    break;
+                }
+            }
+        }
+        hijo1.setCromosoma(cromosoma1);
+
+        //Relleno el hijo 2
+        System.arraycopy(padre2, 0, cromosoma2, 0, corte);
+        coincidencias = 0;
+        for (int i = corte; i < n; i++) {
+            if (!yaEsta(cromosoma2, corte + 1, padre1[i])) {
+                cromosoma2[i - coincidencias] = padre1[i];
+            } else {
+                ++coincidencias;
+            }
+        }
+        for (int i = n - coincidencias; i < n; i++) {
+            for (int j = corte; j < n; j++) {
+                if (!yaEsta(cromosoma2, n - coincidencias, padre2[j])) {
+                    cromosoma2[i] = padre2[j];
+                    --coincidencias;
+                    break;
+                }
+            }
+        }
+        hijo2.setCromosoma(cromosoma2);
+    }
+
+    private boolean yaEsta(int cromosoma[], int pos, int num) {
+        for (int i = 0; i < pos; i++) {
+            if (cromosoma[i] == num) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void generarPoblacionAleatoria(int tamPoblacion) {
@@ -133,42 +218,19 @@ public class Baldwiniana {
         }
     }
 
-        private void mutarPoblacion() {
-        int prob;
-        int n1, n2, aux;
-        for (int i = 0; i < conf.getTamPoblacion(); i++) {
-            prob = (int) (Math.random() * 100) + 1;
-            if (conf.getProbMutacion() > prob) {
-                n1 = (int) (Math.random() * n);
-                n2 = (int) (Math.random() * n);
-                while (n1 == n2) {
-                    n2 = (int) (Math.random() * n);
-                }
-                aux = descendencia.get(i).getCromosoma()[n1];
-                int[] cromAux = descendencia.get(i).getCromosoma().clone();
-                cromAux[n1] = cromAux[n2];
-                cromAux[n2] = aux;
-                descendencia.get(i).setCromosoma(cromAux);
-            }
-            descendencia.get(i).calcularFitness(flujos, distancias);
+    private void guardarResultado() {
+        String ruta = "baldwin/" + this.mejor.getFitness() + ".txt";
+        File archivo = new File(ruta);
+        BufferedWriter bw;
+        try {
+            bw = new BufferedWriter(new FileWriter(archivo));
+            bw.write(Arrays.toString(mejor.getCromosoma()));
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Estandar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-        
-            private void buscarMejor(int ite) {
-        for (int i = 0; i < conf.getTamPoblacion(); i++) {
-            if (descendencia.get(i).getFitness() < mejor.getFitness()) {
-                System.out.println("-----Nuevo mejor " + descendencia.get(i).getFitness() + " en la iteracion " + ite);
-                mejor.setCromosoma(descendencia.get(i).getCromosoma());
-                mejor.calcularFitness(flujos, distancias);
-                this.graficoMejora.add(new Pair(ite, mejor.getFitness()));
-                if(mejor.getFitness()<45152454){
-                    guardarResultado();
-                    System.out.println("Oleeeeeeeeeeeeeee");
-                }
-            }
-        }
-    }
-    
+
     /**
      * @return the graficoMejora
      */

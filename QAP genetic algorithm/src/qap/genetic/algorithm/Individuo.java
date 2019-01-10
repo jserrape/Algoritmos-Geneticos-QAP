@@ -17,6 +17,7 @@ public class Individuo {
 
     private int fitness;
     private int cromosoma[];
+    private int mejora[];
     private int tam;
 
     public Individuo() {
@@ -26,6 +27,7 @@ public class Individuo {
         fitness = -1;
         tam = t;
         cromosoma = new int[tam];
+        mejora = null;
 
         ArrayList<Integer> num = new ArrayList<>();
         for (int i = 0; i < tam; i++) {
@@ -42,6 +44,7 @@ public class Individuo {
         this.tam = t;
         this.cromosoma = crom;
         this.fitness = f;
+        mejora = null;
     }
 
     public boolean igualIndividuo(Individuo indi) {
@@ -54,6 +57,30 @@ public class Individuo {
             }
         }
         return true;
+    }
+
+    public void aplicarBusquedaLocal(int flujos[][], int distancias[][]) {
+        if (mejora == null) {
+            mejora = busquedaLocal(flujos, distancias);
+        }
+        calcularFitnessLocal(flujos, distancias);
+    }
+
+    public void calcularFitnessLocal(int flujos[][], int distancias[][]) {
+        this.fitness = 0;
+        for (int i = 0; i < mejora.length; i++) {
+            for (int j = 0; j < mejora.length; j++) {
+                //System.out.println(i+"\t"+j);
+                int v1 = flujos[i][j];
+                int v2 = mejora[i];
+                int v3 = mejora[j];
+                int v4 = distancias[v2][v3];
+                this.fitness += v1 * v4;
+            }
+        }
+        if (this.fitness < 44095032) {
+            System.out.println("Fitness error" + this.getFitness());
+        }
     }
 
     public void calcularFitness(int flujos[][], int distancias[][]) {
@@ -73,7 +100,7 @@ public class Individuo {
         }
     }
 
-    public void busquedaLocal(int flujos[][], int distancias[][]) {
+    public int[] busquedaLocal(int flujos[][], int distancias[][]) {
         Individuo local = new Individuo(this.tam, this.cromosoma, this.fitness);
         Individuo indiAux;
         int vAux;
@@ -93,10 +120,11 @@ public class Individuo {
             }
         }
         if (mejorado) {
-            this.setCromosoma(local.cromosoma);
-            this.setFitness(local.fitness);
-            this.setTam(local.tam);
+//            this.setCromosoma(local.cromosoma);
+//            this.setFitness(local.fitness);
+//            this.setTam(local.tam);
         }
+        return local.getCromosoma();
     }
 
     /**

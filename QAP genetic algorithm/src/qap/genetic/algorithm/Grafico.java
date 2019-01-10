@@ -27,14 +27,16 @@ public class Grafico extends JFrame {
 
     private JPanel panel;
     private final ArrayList<Pair> datos;
+    private final String tipo;
 
-    public Grafico(ArrayList<Pair> dat) {
+    public Grafico(ArrayList<Pair> dat,String tip) {
         setTitle("Evolución del mejor fitness");
         setSize(800,500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         this.datos=dat;
+        this.tipo=tip;
         init();
     }
 
@@ -55,7 +57,7 @@ public class Grafico extends JFrame {
         panel.add(chartPanel);
         
         try {
-            ChartUtilities.saveChartAsJPEG(new File("grafico.jpg"), chart, 2000, 500);
+            ChartUtilities.saveChartAsJPEG(new File(this.tipo+".jpg"), chart, 2000, 500);
         } catch (IOException ex) {
             Logger.getLogger(Grafico.class.getName()).log(Level.SEVERE, null, ex);
         }
