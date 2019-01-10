@@ -30,7 +30,7 @@ public class Grafico extends JFrame {
     private final String tipo;
 
     public Grafico(ArrayList<Pair> dat,String tip) {
-        setTitle("Evolución del mejor fitness");
+        setTitle("Evolución del mejor fitness "+tip);
         setSize(800,500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -50,7 +50,7 @@ public class Grafico extends JFrame {
         }
 
         // Creando el Grafico
-        JFreeChart chart = ChartFactory.createLineChart("Evolución del fitness", "Iteracion", "Fitness", line_chart_dataset, PlotOrientation.VERTICAL, true, true, false);
+        JFreeChart chart = ChartFactory.createLineChart("Evolución del fitness "+tipo, "Iteracion", "Fitness", line_chart_dataset, PlotOrientation.VERTICAL, true, true, false);
 
         // Mostrar Grafico
         ChartPanel chartPanel = new ChartPanel(chart);

@@ -29,9 +29,9 @@ public class main {
         System.out.println("Comienza...");
         leerFichero();
         //Estandar
-//        Estandar est = new Estandar(n, flujos, distancias);
-//        est.ejecutar();
-//        new Grafico(est.getGraficoMejora(),"estandar").setVisible(true);
+        Estandar est = new Estandar(n, flujos, distancias);
+        est.ejecutar();
+        new Grafico(est.getGraficoMejora(),"estandar").setVisible(true);
 
         //Baldwin
         Baldwiniana bald = new Baldwiniana(n, flujos, distancias);
