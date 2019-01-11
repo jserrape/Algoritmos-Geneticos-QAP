@@ -59,9 +59,9 @@ public class Individuo {
         return true;
     }
 
-    public void aplicarBusquedaLocal(int flujos[][], int distancias[][]) {
+    public void aplicarBusquedaLocal(int flujos[][], int distancias[][], boolean lewin) {
         if (mejora == null) {
-            mejora = busquedaLocal(flujos, distancias);
+            mejora = busquedaLocal(flujos, distancias, lewin);
         }
         calcularFitnessLocal(flujos, distancias);
     }
@@ -100,7 +100,7 @@ public class Individuo {
         }
     }
 
-    public int[] busquedaLocal(int flujos[][], int distancias[][]) {
+    public int[] busquedaLocal(int flujos[][], int distancias[][], boolean lewin) {
         Individuo local = new Individuo(this.tam, this.cromosoma, this.fitness);
         Individuo indiAux;
         int vAux;
@@ -119,10 +119,9 @@ public class Individuo {
                 }
             }
         }
-        if (mejorado) {
-//            this.setCromosoma(local.cromosoma);
-//            this.setFitness(local.fitness);
-//            this.setTam(local.tam);
+        if (mejorado && lewin) {
+            this.setCromosoma(local.cromosoma);
+            this.setFitness(local.fitness);
         }
         return local.getCromosoma();
     }
