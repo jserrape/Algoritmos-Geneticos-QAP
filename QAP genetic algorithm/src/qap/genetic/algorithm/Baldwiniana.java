@@ -84,10 +84,10 @@ public class Baldwiniana {
                 mejor.setCromosoma(descendencia.get(i).getCromosoma());
                 mejor.calcularFitness(flujos, distancias);
                 this.graficoMejora.add(new Pair(ite, mejor.getFitness()));
-                //if(mejor.getFitness()<45152454){
-                util.guardarResultado("baldwin", mejor);
-                //    System.out.println("Oleeeeeeeeeeeeeee");
-                //}
+                if (mejor.getFitness() < 45152454) {
+                    util.guardarResultado("baldwin", mejor);
+                    //    System.out.println("Oleeeeeeeeeeeeeee");
+                }
             }
         }
         if (this.haMejorado) {
