@@ -34,14 +34,14 @@ public class main {
         new Grafico(est.getGraficoMejora(),"estandar").setVisible(true);
 
         //Baldwin
-        Baldwiniana bald = new Baldwiniana(n, flujos, distancias);
-        bald.ejecutar();
-        new Grafico(bald.getGraficoMejora(),"Balwiniana").setVisible(true);
+//        Baldwiniana bald = new Baldwiniana(n, flujos, distancias);
+//        bald.ejecutar();
+//        new Grafico(bald.getGraficoMejora(),"Balwiniana").setVisible(true);
         
         //Lamarck
-        Lamarckiana lam = new Lamarckiana(n, flujos, distancias);
-        lam.ejecutar();
-        new Grafico(lam.getGraficoMejora(),"Lamarckiana").setVisible(true);
+//        Lamarckiana lam = new Lamarckiana(n, flujos, distancias);
+//        lam.ejecutar();
+//        new Grafico(lam.getGraficoMejora(),"Lamarckiana").setVisible(true);
     }
 
     private static void leerFichero() throws FileNotFoundException {

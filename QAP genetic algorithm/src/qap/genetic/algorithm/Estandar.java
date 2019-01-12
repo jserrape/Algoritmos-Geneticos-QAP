@@ -26,6 +26,9 @@ public class Estandar {
 
     private final Individuo mejor;
 
+    private int sinMejorar;
+    private boolean haMejorado;
+
     public Estandar(int n, int f[][], int d[][]) {
         this.n = n;
         this.flujos = f;
@@ -33,6 +36,9 @@ public class Estandar {
         poblacion = new ArrayList<>();
         graficoMejora = new ArrayList<>();
         conf = new Configuracion();
+
+        this.sinMejorar = 999999;
+        this.haMejorado = false;
 
         mejor = new Individuo(n);
         mejor.calcularFitness(flujos, distancias);
@@ -43,8 +49,12 @@ public class Estandar {
         UtilGeneticos util = new UtilGeneticos(n, this.flujos, this.distancias);
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < conf.getnIteraciones(); i++) {
-            util.generarPoblacionAleatoria(poblacion, conf.getTamPoblacion() - 1);
-            poblacion.add(mejor);
+            if (this.sinMejorar >= this.conf.getItSinMejora()) {
+                System.out.println("Reinicializo");
+                util.generarPoblacionAleatoria(poblacion, conf.getTamPoblacion() - 1);
+                poblacion.add(mejor);
+                this.sinMejorar=0;
+            }
             descendencia = new ArrayList<>();
             for (int j = 0; j < conf.getTamPoblacion() / 2; j++) {
 
@@ -53,7 +63,7 @@ public class Estandar {
                 Individuo hijo1 = new Individuo(), hijo2 = new Individuo();
 
                 util.cruce(padre1.getCromosoma(), padre2.getCromosoma(), hijo1, hijo2);
-                
+
                 descendencia.add(hijo1);
                 descendencia.add(hijo2);
             }
@@ -69,6 +79,7 @@ public class Estandar {
         for (int i = 0; i < conf.getTamPoblacion(); i++) {
             if (descendencia.get(i).getFitness() < mejor.getFitness()) {
                 System.out.println("-----Nuevo mejor " + descendencia.get(i).getFitness() + " en la iteracion " + ite);
+                this.haMejorado = true;
                 mejor.setCromosoma(descendencia.get(i).getCromosoma());
                 mejor.calcularFitness(flujos, distancias);
                 this.graficoMejora.add(new Pair(ite, mejor.getFitness()));
@@ -77,6 +88,12 @@ public class Estandar {
                     System.out.println("Oleeeeeeeeeeeeeee");
                 }
             }
+        }
+        if (this.haMejorado) {
+            this.haMejorado = false;
+            this.sinMejorar = 0;
+        } else {
+            ++this.sinMejorar;
         }
     }
 
