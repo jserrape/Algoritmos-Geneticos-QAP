@@ -31,13 +31,13 @@ public class main {
         //Estandar
         Estandar est = new Estandar(n, flujos, distancias);
         est.ejecutar();
-        new Grafico(est.getGraficoMejora(),"estandar").setVisible(true);
+        new Grafico(est.getGraficoMejora(), "estandar").setVisible(true);
 
         //Baldwin
-//        Baldwiniana bald = new Baldwiniana(n, flujos, distancias);
-//        bald.ejecutar();
-//        new Grafico(bald.getGraficoMejora(),"Balwiniana").setVisible(true);
-        
+        Baldwiniana bald = new Baldwiniana(n, flujos, distancias);
+        bald.ejecutar();
+        new Grafico(bald.getGraficoMejora(), "Balwiniana").setVisible(true);
+
         //Lamarck
 //        Lamarckiana lam = new Lamarckiana(n, flujos, distancias);
 //        lam.ejecutar();
