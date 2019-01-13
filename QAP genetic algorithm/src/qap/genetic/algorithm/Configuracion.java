@@ -11,10 +11,29 @@ package qap.genetic.algorithm;
  */
 public class Configuracion {
 
+    /**
+     * Tamaño de la poblacion
+     */
     private final int tamPoblacion = 50;
-    private final int nIteraciones = 1000;
+
+    /**
+     * Numero de iteraciones que va a ejecutar el algoritmo
+     */
+    private final int nIteraciones = 10000;
+
+    /**
+     * Probabilidad de mutar un individuo
+     */
     private final int probMutacion = 80;
+
+    /**
+     * Iteraciones tras las que se reinicializa el algoritmo si no mejora
+     */
     private final int itSinMejora = 300;
+
+    /**
+     * Fichero qap a leer
+     */
     //private final String fichero ="qap.datos/chr12a.dat";
     private final String fichero = "qap.datos/tai256c.dat"; //Cota --> 44095032
 

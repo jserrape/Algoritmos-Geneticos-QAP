@@ -29,6 +29,13 @@ public class Estandar {
     private int sinMejorar;
     private boolean haMejorado;
 
+    /**
+     * Constructor parametrizado
+     *
+     * @param n Tamaño de la matriz
+     * @param f Matriz de flujos
+     * @param d Matriz de distancias
+     */
     public Estandar(int n, int f[][], int d[][]) {
         this.n = n;
         this.flujos = f;
@@ -45,15 +52,17 @@ public class Estandar {
         this.graficoMejora.add(new Pair(1, mejor.getFitness()));
     }
 
+    /**
+     * Función principal del algoritmo
+     */
     public void ejecutar() {
         UtilGeneticos util = new UtilGeneticos(n, this.flujos, this.distancias);
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < conf.getnIteraciones(); i++) {
             if (this.sinMejorar >= this.conf.getItSinMejora()) {
-                System.out.println("Reinicializo");
                 util.generarPoblacionAleatoria(poblacion, conf.getTamPoblacion() - 1);
                 poblacion.add(mejor);
-                this.sinMejorar=0;
+                this.sinMejorar = 0;
             }
             descendencia = new ArrayList<>();
             for (int j = 0; j < conf.getTamPoblacion() / 2; j++) {
@@ -75,18 +84,22 @@ public class Estandar {
         System.out.println("El algoritmo genetico estandar ha tardado " + (endTime / 1000) + " segundos.");
     }
 
+    /**
+     * Buscar el mejor individuo de la población y comprueba si es mejor que el
+     * anterior
+     *
+     * @param ite Número de la iteración actual
+     * @param util Clase con las funciones comunes
+     */
     private void buscarMejor(int ite, UtilGeneticos util) {
         for (int i = 0; i < conf.getTamPoblacion(); i++) {
             if (descendencia.get(i).getFitness() < mejor.getFitness()) {
-                System.out.println("-----Nuevo mejor " + descendencia.get(i).getFitness() + " en la iteracion " + ite);
+                System.out.println("Nuevo mejor " + descendencia.get(i).getFitness() + " en la iteracion " + ite);
                 this.haMejorado = true;
                 mejor.setCromosoma(descendencia.get(i).getCromosoma());
                 mejor.calcularFitness(flujos, distancias);
                 this.graficoMejora.add(new Pair(ite, mejor.getFitness()));
-                if (mejor.getFitness() < 45152454) {
-                    util.guardarResultado("estandar", mejor);
-                    System.out.println("Oleeeeeeeeeeeeeee");
-                }
+                util.guardarResultado("estandar", mejor);
             }
         }
         if (this.haMejorado) {

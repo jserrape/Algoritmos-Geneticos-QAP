@@ -20,9 +20,17 @@ public class Individuo {
     private int mejora[];
     private int tam;
 
+    /**
+     * Constructor por defecto
+     */
     public Individuo() {
     }
 
+    /**
+     * Constructor parametrizado
+     *
+     * @param t Tamaño del vector solución
+     */
     public Individuo(int t) {
         fitness = -1;
         tam = t;
@@ -40,6 +48,13 @@ public class Individuo {
         }
     }
 
+    /**
+     * Constructor parametrizado
+     *
+     * @param t Tamaño del vector solución
+     * @param crom Vector solucion
+     * @param f Fitness del individuo
+     */
     public Individuo(int t, int crom[], int f) {
         this.tam = t;
         this.cromosoma = crom;
@@ -47,6 +62,12 @@ public class Individuo {
         mejora = null;
     }
 
+    /**
+     * Comprueba si dos individuos son iduales
+     *
+     * @param indi Individuo con el que comparar
+     * @return Booleano que indica si son iguales o no
+     */
     public boolean igualIndividuo(Individuo indi) {
         if (this.tam != indi.getTam()) {
             return false;
@@ -59,6 +80,13 @@ public class Individuo {
         return true;
     }
 
+    /**
+     * Optimiza con búsqueda local el individuo
+     *
+     * @param flujos Matriz de flujos
+     * @param distancias Matriz de distancias
+     * @param lewin Indica si se trata de un algoritmo genetico Lewiniano
+     */
     public void aplicarBusquedaLocal(int flujos[][], int distancias[][], boolean lewin) {
         if (mejora == null) {
             mejora = busquedaLocal(flujos, distancias, lewin);
@@ -66,11 +94,16 @@ public class Individuo {
         calcularFitnessLocal(flujos, distancias);
     }
 
+    /**
+     * Calcula el fitness del individuo usando el vector mejora
+     *
+     * @param flujos Matriz de flujos
+     * @param distancias Matriz de distancias
+     */
     public void calcularFitnessLocal(int flujos[][], int distancias[][]) {
         this.fitness = 0;
         for (int i = 0; i < mejora.length; i++) {
             for (int j = 0; j < mejora.length; j++) {
-                //System.out.println(i+"\t"+j);
                 int v1 = flujos[i][j];
                 int v2 = mejora[i];
                 int v3 = mejora[j];
@@ -83,6 +116,12 @@ public class Individuo {
         }
     }
 
+    /**
+     * Calcula el fitness del individuo
+     *
+     * @param flujos Matriz de flujos
+     * @param distancias Matriz de distancias
+     */
     public void calcularFitness(int flujos[][], int distancias[][]) {
         this.fitness = 0;
         for (int i = 0; i < this.getCromosoma().length; i++) {
@@ -100,6 +139,14 @@ public class Individuo {
         }
     }
 
+    /**
+     * Optimiza con búsqueda local el individuo
+     *
+     * @param flujos Matriz de flujos
+     * @param distancias Matriz de distancias
+     * @param lewin Indica si se trata de un algoritmo genetico Lewiniano
+     * @return Indica si ha mejorado
+     */
     public int[] busquedaLocal(int flujos[][], int distancias[][], boolean lewin) {
         Individuo local = new Individuo(this.tam, this.cromosoma, this.fitness);
         Individuo indiAux;
@@ -113,7 +160,6 @@ public class Individuo {
                 indiAux.getCromosoma()[j] = vAux;
                 indiAux.calcularFitness(flujos, distancias);
                 if (indiAux.getFitness() < local.getFitness()) {
-                    System.out.println("Ha habido una mejora local");
                     local = new Individuo(indiAux.tam, indiAux.cromosoma, indiAux.fitness);
                     mejorado = true;
                 }

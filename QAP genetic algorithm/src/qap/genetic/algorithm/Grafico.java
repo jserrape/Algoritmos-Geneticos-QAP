@@ -29,6 +29,11 @@ public class Grafico extends JFrame {
     private final ArrayList<Pair> datos;
     private final String tipo;
 
+    /**
+     * Constructor parametrizado del grafico
+     * @param dat Array con las iteraciones y el fitness asociado
+     * @param tip Tipo de algoritmo
+     */
     public Grafico(ArrayList<Pair> dat,String tip) {
         setTitle("Evolución del mejor fitness "+tip);
         setSize(800,500);
@@ -40,6 +45,9 @@ public class Grafico extends JFrame {
         init();
     }
 
+    /**
+     * Genera una imagen con la evolucion del fitness
+     */
     private void init() {
         panel = new JPanel();
         getContentPane().add(panel);

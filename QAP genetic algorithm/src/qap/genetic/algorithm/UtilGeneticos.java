@@ -27,6 +27,12 @@ public class UtilGeneticos {
 
     private final Configuracion conf;
 
+    /**
+     * Consrtuctor parametrizado
+     * @param n Tamaño del array de solucion
+     * @param flujos Matriz de flujos
+     * @param distancias Matriz de distancias
+     */
     public UtilGeneticos(int n, int flujos[][], int distancias[][]) {
         this.n = n;
         this.flujos = flujos;
@@ -35,6 +41,11 @@ public class UtilGeneticos {
         conf = new Configuracion();
     }
 
+    /**
+     * Genera una poblacion aleatoria
+     * @param poblacion Array en el que almacenar la poblacion
+     * @param tamPoblacion Tamaño de la poblacion
+     */
     public void generarPoblacionAleatoria(ArrayList<Individuo> poblacion, int tamPoblacion) {
         for (int i = 0; i < tamPoblacion; i++) {
             Individuo ind = new Individuo(n);
@@ -43,6 +54,12 @@ public class UtilGeneticos {
         }
     }
 
+    /**
+     * Elige al primer padre por torneo binario
+     *
+     * @param poblacion Población con los individuos
+     * @return Individuo seleccionado
+     */
     public Individuo torneoBinario1(ArrayList<Individuo> poblacion) {
         Random rnd = new Random();
 
@@ -63,6 +80,13 @@ public class UtilGeneticos {
         }
     }
 
+    /**
+     * Elige al segundo padre por torneo binario
+     *
+     * @param poblacion Población con los individuos
+     * @param padre1 Anterior individuo seleccionado
+     * @return Individuo seleccionado
+     */
     public Individuo torneoBinario2(ArrayList<Individuo> poblacion, Individuo padre1) {
         Random rnd = new Random();
 
@@ -84,6 +108,11 @@ public class UtilGeneticos {
         }
     }
 
+    /**
+     * Muta a toda la poblacion
+     *
+     * @param descendencia Población a la que se muta
+     */
     public void mutarPoblacion(ArrayList<Individuo> descendencia) {
         int prob;
         int n1, n2, aux;
@@ -105,6 +134,12 @@ public class UtilGeneticos {
         }
     }
 
+    /**
+     * Guarda un una solución en un fichero
+     *
+     * @param directorio Directorio en el que se va a guardar
+     * @param mejor Individuo con la solucion a guardar
+     */
     public void guardarResultado(String directorio, Individuo mejor) {
         String ruta = directorio + "/" + mejor.getFitness() + ".txt";
         File archivo = new File(ruta);
@@ -118,6 +153,14 @@ public class UtilGeneticos {
         }
     }
 
+    /**
+     * Cruza dos individuos y da lugar a otros dos
+     *
+     * @param padre1 Individuo de cruce 1
+     * @param padre2 Individuo de cruce 2
+     * @param hijo1 Individuo resultante 1
+     * @param hijo2 Individuo resultante 2
+     */
     public void cruce(int[] padre1, int[] padre2, Individuo hijo1, Individuo hijo2) {
         int corte = (int) (Math.random() * n);
         int cromosoma1[], cromosoma2[];
@@ -169,6 +212,14 @@ public class UtilGeneticos {
         hijo2.setCromosoma(cromosoma2);
     }
 
+    /**
+     * Comprueba si ya hay un valor en el vector solucion
+     *
+     * @param cromosoma Vector solucion
+     * @param pos Posicion limite
+     * @param num Valor a comprobar
+     * @return Si ya hay un valor en el vector solucion o no
+     */
     private boolean yaEsta(int cromosoma[], int pos, int num) {
         for (int i = 0; i < pos; i++) {
             if (cromosoma[i] == num) {
