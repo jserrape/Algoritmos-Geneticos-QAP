@@ -29,6 +29,7 @@ public class UtilGeneticos {
 
     /**
      * Consrtuctor parametrizado
+     *
      * @param n Tamaño del array de solucion
      * @param flujos Matriz de flujos
      * @param distancias Matriz de distancias
@@ -43,6 +44,7 @@ public class UtilGeneticos {
 
     /**
      * Genera una poblacion aleatoria
+     *
      * @param poblacion Array en el que almacenar la poblacion
      * @param tamPoblacion Tamaño de la poblacion
      */
@@ -141,6 +143,10 @@ public class UtilGeneticos {
      * @param mejor Individuo con la solucion a guardar
      */
     public void guardarResultado(String directorio, Individuo mejor) {
+        File folder = new File(directorio);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
         String ruta = directorio + "/" + mejor.getFitness() + ".txt";
         File archivo = new File(ruta);
         BufferedWriter bw;
