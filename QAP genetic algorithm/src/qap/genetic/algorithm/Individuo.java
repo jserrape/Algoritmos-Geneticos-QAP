@@ -140,6 +140,49 @@ public class Individuo {
     }
 
     /**
+     * Calcula el cambio en el fitness del individuo
+     *
+     * @param i
+     * @param j
+     * @param flujos Matriz de flujos
+     * @param crom
+     * @param distancias Matriz de distancias
+     */
+    public void calcularCambioFitness(int i, int j, int crom[], int flujos[][], int distancias[][]) {
+        int aux1, aux2;
+        for (int z = 0; z < tam; z++) {
+            aux1 = crom[i];
+            aux2 = crom[z];
+            fitness -= flujos[i][z] * distancias[aux1][aux2];
+            aux1 = this.cromosoma[i];
+            aux2 = this.cromosoma[z];
+            fitness += flujos[i][z] * distancias[aux1][aux2];
+
+            aux1 = crom[j];
+            aux2 = crom[z];
+            fitness -= flujos[j][z] * distancias[aux1][aux2];
+            aux1 = this.cromosoma[j];
+            aux2 = this.cromosoma[z];
+            fitness += flujos[j][z] * distancias[aux1][aux2];
+
+            if (z != i && z != j) {
+                fitness -= flujos[z][i] * distancias[crom[z]][crom[i]];
+                aux1 = this.cromosoma[z];
+                aux2 = this.cromosoma[i];
+                fitness += flujos[z][i] * distancias[aux1][aux2];
+
+                fitness -= flujos[z][j] * distancias[crom[z]][crom[j]];
+                aux1 = this.cromosoma[z];
+                aux2 = this.cromosoma[j];
+                fitness += flujos[z][j] * distancias[aux1][aux2];
+            }
+        }
+        if (this.fitness < 44095032) {
+            System.out.println("Fitness " + this.getFitness());
+        }
+    }
+
+    /**
      * Optimiza con búsqueda local el individuo
      *
      * @param flujos Matriz de flujos
@@ -158,7 +201,8 @@ public class Individuo {
                 vAux = indiAux.getCromosoma()[i];
                 indiAux.getCromosoma()[i] = indiAux.getCromosoma()[j];
                 indiAux.getCromosoma()[j] = vAux;
-                indiAux.calcularFitness(flujos, distancias);
+                //indiAux.calcularFitness(flujos, distancias);
+                calcularCambioFitness(i, j, local.getCromosoma(), flujos, distancias);
                 if (indiAux.getFitness() < local.getFitness()) {
                     local = new Individuo(indiAux.tam, indiAux.cromosoma, indiAux.fitness);
                     mejorado = true;
