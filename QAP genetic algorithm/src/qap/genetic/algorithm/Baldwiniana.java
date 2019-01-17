@@ -63,7 +63,7 @@ public class Baldwiniana {
             if (i % 1000 == 0) {
                 System.out.println("It " + i);
             }
-            if (this.sinMejorar >= this.conf.getItSinMejora()) {
+            if ((this.sinMejorar >= this.conf.getItSinMejora()) || util.reiniciarPorVariedad(poblacion)) {
                 util.generarPoblacionAleatoria(poblacion, conf.getTamPoblacion() - 1);
                 poblacion.add(mejor);
                 this.sinMejorar = 0;

@@ -33,16 +33,16 @@ public class main {
         est.ejecutar();
         new Grafico(est.getGraficoMejora(), "Estandar").setVisible(true);
 
-//        //Baldwin
+        //Baldwin
         Baldwiniana bald = new Baldwiniana(n, flujos, distancias);
         bald.ejecutar();
         new Grafico(bald.getGraficoMejora(), "Balwiniana").setVisible(true);
 
-//        //Lamarck
+        //Lamarck
         Lamarckiana lam = new Lamarckiana(n, flujos, distancias);
         lam.ejecutar();
-        new Grafico(lam.getGraficoMejora(),"Lamarckiana").setVisible(true);
-        
+        new Grafico(lam.getGraficoMejora(), "Lamarckiana").setVisible(true);
+
     }
 
     private static void leerFichero() throws FileNotFoundException {

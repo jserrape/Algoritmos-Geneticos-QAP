@@ -11,6 +11,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -95,7 +98,7 @@ public class UtilGeneticos {
         int p1 = rnd.nextInt((conf.getTamPoblacion() - 1) + 1);
         int p2 = rnd.nextInt((conf.getTamPoblacion() - 1) + 1);
         if (p1 == p2 || poblacion.get(p1).igualIndividuo(padre1) || poblacion.get(p2).igualIndividuo(padre1)) {
-            while (p1 == p2 || poblacion.get(p1).getFitness()==padre1.getFitness() || poblacion.get(p2).getFitness()==padre1.getFitness()) {
+            while (p1 == p2 || poblacion.get(p1).getFitness() == padre1.getFitness() || poblacion.get(p2).getFitness() == padre1.getFitness()) {
                 p1 = rnd.nextInt((conf.getTamPoblacion() - 1) + 1);
                 p2 = rnd.nextInt((conf.getTamPoblacion() - 1) + 1);
             }
@@ -134,6 +137,22 @@ public class UtilGeneticos {
             }
             descendencia.get(i).calcularFitness(flujos, distancias);
         }
+    }
+
+    public boolean reiniciarPorVariedad(ArrayList<Individuo> poblacion) {
+        //<Fitness, cantidad>
+        Map<Integer, Integer> mapa = new HashMap<>();
+        for (int i = 0; i < poblacion.size(); i++) {
+            if (mapa.containsKey(poblacion.get(i).getFitness())) {
+                int valor = mapa.get(poblacion.get(i).getFitness());
+                ++valor;
+                mapa.put(poblacion.get(i).getFitness(), valor);
+            } else {
+                mapa.put(poblacion.get(i).getFitness(), 1);
+            }
+        }
+        int limite = (conf.getPorcientoIguales() * 100) / n;
+        return mapa.keySet().stream().anyMatch((key) -> (mapa.get(key) >= limite));
     }
 
     /**

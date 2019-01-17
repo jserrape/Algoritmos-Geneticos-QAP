@@ -12,20 +12,20 @@ import java.util.ArrayList;
  * @author juanca
  */
 public class Estandar {
-
+    
     private final int n;
     private final int flujos[][];
     private final int distancias[][];
-
+    
     private final ArrayList<Individuo> poblacion;
     private ArrayList<Individuo> descendencia;
-
+    
     private final ArrayList<Pair> graficoMejora;
-
+    
     private final Configuracion conf;
-
+    
     private final Individuo mejor;
-
+    
     private int sinMejorar;
     private boolean haMejorado;
 
@@ -43,10 +43,10 @@ public class Estandar {
         poblacion = new ArrayList<>();
         graficoMejora = new ArrayList<>();
         conf = new Configuracion();
-
+        
         this.sinMejorar = 999999;
         this.haMejorado = false;
-
+        
         mejor = new Individuo(n);
         mejor.calcularFitness(flujos, distancias);
         this.graficoMejora.add(new Pair(1, mejor.getFitness()));
@@ -63,24 +63,24 @@ public class Estandar {
             if (i % 1000 == 0) {
                 System.out.println("It " + i);
             }
-            if (this.sinMejorar >= this.conf.getItSinMejora()) {
+            if ((this.sinMejorar >= this.conf.getItSinMejora()) || util.reiniciarPorVariedad(poblacion)) {
                 util.generarPoblacionAleatoria(poblacion, conf.getTamPoblacion() - 1);
                 poblacion.add(mejor);
                 this.sinMejorar = 0;
             }
             descendencia.clear();
             for (int j = 0; j < conf.getTamPoblacion() / 2; j++) {
-
+                
                 Individuo padre1 = util.torneoBinario1(poblacion);
                 Individuo padre2 = util.torneoBinario2(poblacion, padre1);
                 Individuo hijo1 = new Individuo(), hijo2 = new Individuo();
-
+                
                 util.cruce(padre1.getCromosoma(), padre2.getCromosoma(), hijo1, hijo2);
-
+                
                 descendencia.add(hijo1);
                 descendencia.add(hijo2);
             }
-
+            
             util.mutarPoblacion(descendencia);
             buscarMejor(i, util);
             poblacion.clear();

@@ -32,6 +32,11 @@ public class Configuracion {
     private final int itSinMejora = 300;
 
     /**
+     * Tanto porciento de elementos iguales para reinicializar
+     */
+    private final int porcientoIguales = 50;
+
+    /**
      * Fichero qap a leer
      */
     //private final String fichero ="qap.datos/chr12a.dat";
@@ -64,6 +69,13 @@ public class Configuracion {
      */
     public int getItSinMejora() {
         return itSinMejora;
+    }
+
+    /**
+     * @return the porcientoIguales
+     */
+    public int getPorcientoIguales() {
+        return porcientoIguales;
     }
 
 }
