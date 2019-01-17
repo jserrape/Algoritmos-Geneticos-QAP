@@ -57,14 +57,18 @@ public class Lamarckiana {
      */
     public void ejecutar() {
         UtilGeneticos util = new UtilGeneticos(n, this.flujos, this.distancias);
+        descendencia = new ArrayList<>();
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < conf.getnIteraciones(); i++) {
+            if (i % 1000 == 0) {
+                System.out.println("It " + i);
+            }
             if (this.sinMejorar >= this.conf.getItSinMejora()) {
                 util.generarPoblacionAleatoria(poblacion, conf.getTamPoblacion() - 1);
                 poblacion.add(mejor);
                 this.sinMejorar = 0;
             }
-            descendencia = new ArrayList<>();
+            descendencia.clear();
             for (int j = 0; j < conf.getTamPoblacion() / 2; j++) {
 
                 Individuo padre1 = util.torneoBinario1(poblacion);
@@ -75,9 +79,14 @@ public class Lamarckiana {
                 descendencia.add(hijo1);
                 descendencia.add(hijo2);
             }
+
             util.mutarPoblacion(descendencia);
             buscarMejor(i, util);
-            System.gc();
+            poblacion.clear();
+            for (int j = 0; j < descendencia.size() - 1; j++) {
+                poblacion.add(descendencia.get(j));
+            }
+            poblacion.add(mejor);
         }
         util.guardarResultado("lamarck", mejor);
         long endTime = System.currentTimeMillis() - startTime;

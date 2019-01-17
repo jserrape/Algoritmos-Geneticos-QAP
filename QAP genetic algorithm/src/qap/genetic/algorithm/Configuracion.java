@@ -19,7 +19,7 @@ public class Configuracion {
     /**
      * Numero de iteraciones que va a ejecutar el algoritmo
      */
-    private final int nIteraciones = 10000;
+    private final int nIteraciones = 1000000;
 
     /**
      * Probabilidad de mutar un individuo

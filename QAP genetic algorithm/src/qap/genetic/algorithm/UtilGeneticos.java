@@ -95,7 +95,7 @@ public class UtilGeneticos {
         int p1 = rnd.nextInt((conf.getTamPoblacion() - 1) + 1);
         int p2 = rnd.nextInt((conf.getTamPoblacion() - 1) + 1);
         if (p1 == p2 || poblacion.get(p1).igualIndividuo(padre1) || poblacion.get(p2).igualIndividuo(padre1)) {
-            while (p1 == p2 || poblacion.get(p1).igualIndividuo(padre1) || poblacion.get(p2).igualIndividuo(padre1)) {
+            while (p1 == p2 || poblacion.get(p1).getFitness()==padre1.getFitness() || poblacion.get(p2).getFitness()==padre1.getFitness()) {
                 p1 = rnd.nextInt((conf.getTamPoblacion() - 1) + 1);
                 p2 = rnd.nextInt((conf.getTamPoblacion() - 1) + 1);
             }
